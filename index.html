@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f7f7ef">
+  <meta name="description" content="Explore the circle of fifths and practice finding neighboring keys and relative minors.">
+  <title>Fifths · Music theory practice</title>
+  <link rel="icon" href="./favicon.png" type="image/png">
+  <link rel="stylesheet" href="./styles.css">
+  <script type="module" src="./app.ts"></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="#explore" aria-label="Fifths home">
+        <span class="brand-mark" aria-hidden="true"></span>
+        Fifths
+      </a>
+      <nav class="view-nav" aria-label="Main navigation">
+        <a href="#explore" data-view="explore" aria-current="page">Explore</a>
+        <a href="#practice" data-view="practice">Practice</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="main">
+    <section id="explore-view">
+      <div class="page-intro">
+        <h1 tabindex="-1">Circle of fifths</h1>
+        <p>Tap a key to find its neighbors and relative key.</p>
+      </div>
+
+      <div class="explore-grid">
+        <section class="wheel-card card" aria-label="Interactive circle of fifths">
+          <div class="wheel-directions" aria-label="Up is clockwise, down is counterclockwise">
+            <span><span aria-hidden="true">↶</span> Down a fifth</span>
+            <span>Up a fifth <span aria-hidden="true">↷</span></span>
+          </div>
+          <div class="wheel" id="wheel" role="group" aria-label="Select a key. Use left and right arrow keys to move around the wheel, up for major keys and down for minor keys.">
+            <div class="wheel-center" aria-hidden="true">
+              <span class="wheel-note" id="wheel-note">C</span>
+              <span class="wheel-mode" id="wheel-mode">major</span>
+            </div>
+          </div>
+          <div class="wheel-legend" aria-hidden="true">
+            <span><i class="legend-major"></i> Major keys</span>
+            <span><i class="legend-minor"></i> Relative minors</span>
+          </div>
+        </section>
+
+        <div class="explore-side">
+          <section class="key-card card" aria-labelledby="key-title">
+            <div class="key-summary" aria-live="polite" aria-atomic="true">
+              <p class="eyebrow">Selected key</p>
+              <h2 id="key-title">C major</h2>
+              <p id="signature">No sharps or flats</p>
+            </div>
+            <div id="relationships" class="relationships"></div>
+            <p id="enharmonic" class="enharmonic" hidden></p>
+          </section>
+          <a class="practice-link card" href="#practice">
+            <span class="practice-icon" aria-hidden="true">♪</span>
+            <span>Practice with a quiz</span>
+            <span class="practice-arrow" aria-hidden="true">→</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section id="practice-view" hidden>
+      <div class="page-intro">
+        <h1 tabindex="-1">Practice</h1>
+        <p id="practice-intro">Find neighboring keys and their relative minors.</p>
+      </div>
+      <div class="quiz-card card">
+        <div class="quiz-toolbar">
+          <div class="quiz-settings">
+            <div class="quiz-filter" id="quiz-type-filter">
+              <label for="quiz-type" class="eyebrow">Question type</label>
+              <select id="quiz-type">
+                <option value="mixed">Mixed practice</option>
+              </select>
+            </div>
+            <div class="quiz-filter">
+              <label for="quiz-format" class="eyebrow">Visual</label>
+              <select id="quiz-format">
+                <option value="names">Key names</option>
+                <option value="piano">Piano</option>
+              </select>
+            </div>
+            <div class="quiz-filter">
+              <label for="quiz-mode" class="eyebrow">Mode</label>
+              <select id="quiz-mode">
+                <option value="intervals">Intervals</option>
+                <option value="ear">Ear Training</option>
+                <option value="chords">Chords</option>
+              </select>
+            </div>
+          </div>
+          <p class="quiz-score" id="score" aria-live="polite" aria-atomic="true">0 / 0 correct</p>
+        </div>
+        <div class="question" id="question-panel">
+          <p class="eyebrow" id="question-number">Question 1</p>
+          <h2 id="prompt" tabindex="-1">
+            <span id="prompt-key"></span>
+            <span id="prompt-notation"></span>
+          </h2>
+          <div id="answer-options" class="answer-options" role="group" aria-labelledby="prompt"></div>
+          <div class="piano-panel" id="piano-panel" hidden>
+            <div class="piano-controls">
+              <p class="piano-instruction" id="piano-instruction">Start from the highlighted note’s major key. Tap the answer.</p>
+              <button type="button" class="piano-replay" id="play-starting-note">Play starting note</button>
+            </div>
+            <div class="piano-keyboard" id="piano-keyboard" role="group" aria-label="Piano keyboard" aria-describedby="prompt piano-instruction"></div>
+          </div>
+        </div>
+        <section class="review-panel" id="review-panel" aria-labelledby="review-title" hidden>
+          <div class="review-summary">
+            <p class="eyebrow">Correct answer</p>
+            <h2 id="review-title" tabindex="-1"></h2>
+            <p class="review-choice" id="review-choice"></p>
+            <p class="review-explanation" id="review-explanation"></p>
+          </div>
+          <div class="review-diagram">
+            <div class="wheel review-wheel" id="review-wheel" role="img" aria-label="Circle of fifths">
+              <div class="wheel-center" aria-hidden="true">
+                <span class="wheel-note" id="review-wheel-note"></span>
+                <span class="wheel-mode" id="review-wheel-mode"></span>
+              </div>
+            </div>
+            <div class="wheel-legend review-legend" aria-hidden="true">
+              <span><i class="legend-origin"></i> Starting key</span>
+              <span id="review-step-legend" hidden><i class="legend-step"></i> One fifth up</span>
+              <span><i class="legend-answer"></i> Correct answer</span>
+            </div>
+          </div>
+          <button type="button" class="review-continue" id="review-continue">
+            Continue <span aria-hidden="true">→</span>
+          </button>
+        </section>
+        <section class="question ear-panel" id="ear-panel" aria-labelledby="ear-prompt" hidden>
+          <p class="eyebrow" id="ear-question-number">Question 1</p>
+          <h2 id="ear-prompt" tabindex="-1">Find the second note</h2>
+          <div class="piano-controls">
+            <p class="piano-instruction" id="ear-instruction">Listen to both notes. The first note is highlighted.</p>
+            <button type="button" class="piano-replay" id="play-interval">Play interval</button>
+          </div>
+          <p class="ear-keyboard-label eyebrow" id="ear-keyboard-label">C3–C5</p>
+          <div class="ear-keyboard-scroll" id="ear-keyboard-scroll">
+            <div class="piano-keyboard" id="ear-keyboard" role="group" aria-labelledby="ear-keyboard-label" aria-describedby="ear-instruction"></div>
+          </div>
+          <p class="ear-keyboard-hint">Swipe sideways to see all keys.</p>
+          <div class="ear-review" id="ear-review" hidden>
+            <button type="button" class="review-continue" id="ear-continue">
+              Continue <span aria-hidden="true">→</span>
+            </button>
+          </div>
+        </section>
+        <section class="question chord-panel" id="chord-panel" aria-labelledby="chord-prompt" hidden>
+          <p class="eyebrow" id="chord-number">Question 1</p>
+          <h2 id="chord-prompt" tabindex="-1" aria-describedby="chord-instruction">
+            <span id="chord-symbol"></span>
+          </h2>
+          <p class="chord-instruction" id="chord-instruction">Find the third of this chord.</p>
+          <div class="answer-options" id="chord-options" role="group" aria-label="Note choices"></div>
+          <div class="piano-keyboard" id="chord-keyboard" role="group" aria-label="Piano keyboard" hidden></div>
+          <div class="chord-review" id="chord-review" hidden>
+            <p id="chord-feedback" role="status"></p>
+            <button type="button" class="review-continue" id="chord-continue" aria-describedby="chord-feedback">
+              Continue <span aria-hidden="true">→</span>
+            </button>
+          </div>
+        </section>
+      </div>
+    </section>
+    <noscript><p>Enable JavaScript to use the interactive circle and quiz.</p></noscript>
+  </main>
+</body>
+</html>

@@ -1,0 +1,9 @@
+Salamander Grand Piano by Alexander Holm
+Recordings of a Yamaha C5 grand piano.
+
+Original collection: https://archive.org/details/SalamanderGrandPianoV3
+MP3 distribution: https://github.com/Tonejs/audio/tree/master/salamander
+License: Creative Commons Attribution 3.0 Unported
+https://creativecommons.org/licenses/by/3.0/
+
+Fifths bundles nine MP3 recordings unchanged and transposes nearby notes during playback.
